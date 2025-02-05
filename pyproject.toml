@@ -1,5 +1,51 @@
+[project]
+name = "preswald"
+version = "0.1.33"
+description = "A lightweight data workflow SDK."
+authors = [
+    { name = "Structured Labs, Inc.", email = "founders@structuredlabs.com" },
+]
+license = { text = "Apache License 2.0" }
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.68.0,<1.0.0",
+    "uvicorn>=0.15.0,<1.0.0",
+    "websockets>=10.0,<11.0",
+    "python-multipart>=0.0.5,<0.1.0",
+    "httpx>=0.23.0,<1.0.0",
+    "Markdown>=3.4.0",
+    "pandas>=1.5",
+    "toml==0.10.2",
+    "SQLAlchemy==2.0.36",
+    "plotly==5.24.1",
+    "Jinja2==3.1.4",
+    "click==8.1.7",
+    "networkx>=3.0",
+    "requests==2.32.3",
+    "psycopg2-binary>=2.9.10",
+    "openai==1.59.7",
+    "celery>=5.4.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "build", "isort", "twine"]
+
+[tool.poetry]
+packages = [
+    { include = "preswald" },
+    { include = "preswald/static/**/*" },
+    { include = "preswald/templates/**/*" },
+]
+
+[tool.poetry.build]
+script = "build_frontend.py"
+
 [build-system]
-# We specify setuptools as our build system - this is what pip will use to build your package
-# The version requirement ensures we have new enough setuptools to handle modern Python packaging
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
