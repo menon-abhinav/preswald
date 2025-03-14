@@ -645,33 +645,17 @@ def deploy(  # noqa: C901
         raise ValueError(f"Unsupported deployment target: {target}")
 
 
-def stop(current_dir: Optional[str] = None) -> None:
-    """
-    Stop a running Preswald deployment.
-
-    If script_path is provided, stops that specific deployment.
-    Otherwise, looks for a deployment in the current directory.
-    """
-    if current_dir:
-        deploy_dir = Path(current_dir) / ".preswald_deploy"
-    else:
-        # Look for deployment in current directory
-        deploy_dir = Path.cwd() / ".preswald_deploy"
-
-    if not deploy_dir.exists():
-        raise Exception("No deployment found")
-
+def stop_local_deployment(script_dir: str) -> None:
     try:
-        with open(deploy_dir / "deployment.json") as f:
-            info = json.load(f)
-            container_name = info["container_name"]
-
-        print(f"Stopping deployment {container_name}...")
+        container_name = get_container_name(Path(script_dir) / "preswald.toml")
+        print(f"Stopping local deployment {container_name}...")
         stop_existing_container(container_name)
+        print("✅ Local deployment stopped successfully")
 
+    except FileNotFoundError as e:
+        raise Exception(f"No deployment configuration found: {e}") from e
     except Exception as e:
-        raise Exception(f"Failed to stop deployment: {e}") from e
-
+        raise Exception(f"Failed to stop local deployment: {e}") from e
 
 def stop_structured_deployment(script_dir: str) -> dict:
     """
